@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart';
 import 'model/config.dart';
 import 'request/token_refresh_request.dart';
@@ -27,7 +28,7 @@ class RequestToken {
 
   Future<Token> _sendTokenRequest(String url, Map<String, String> params,
       Map<String, String> headers) async {
-    var response = await post(url, body: params, headers: headers);
+    var response = await post(File(url).uri, body: params, headers: headers);
     Map<String, dynamic> tokenJson = json.decode(response.body);
     var token = Token.fromJson(tokenJson);
     return token;
