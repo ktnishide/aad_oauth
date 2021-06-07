@@ -69,17 +69,15 @@ class AadOAuth {
   Future<Token> _authorization({bool refreshIfAvailable = false}) async {
     var token = await _authStorage.loadTokenFromCache();
 
-    if (!refreshIfAvailable) {
-      if (token.hasValidAccessToken()) {
-        return token;
+    if (refreshIfAvailable) {
+      if (token.hasRefreshToken()) {
+        token = await _requestToken.requestRefreshToken(token.refreshToken);
       }
     }
 
-    if (token.hasRefreshToken()) {
-      token = await _requestToken.requestRefreshToken(token.refreshToken);
-    }
-
-    if (!token.hasValidAccessToken()) {
+    if (token.hasValidAccessToken()) {
+      return token;
+    } else {
       token = await _performFullAuthFlow();
     }
 

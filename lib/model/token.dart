@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 /// Access token enabling to securely call protected APIs on behalf of the user.
 class Token {
   /// Offset which is subtracted from expire time
@@ -96,6 +98,13 @@ class Token {
 
   /// Check if Access Token is set and not expired.
   bool hasValidAccessToken() {
+    log('=======');
+    log(toString());
+    log('=======');
+    log('accessToken idToken: ${idToken?.toString()}');
+    log('accessToken expire: ${expireTimeStamp?.toString()}');
+    log('accessToken expireIn: ${expiresIn?.toString()}');
+    log('=======');
     return accessToken != null &&
         expireTimeStamp!.isAfter(DateTime.now().toUtc());
   }
