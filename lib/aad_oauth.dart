@@ -77,10 +77,9 @@ class AadOAuth {
 
     if (token.hasValidAccessToken()) {
       return token;
-    } else {
-      token = await _performFullAuthFlow();
     }
 
+    token = await _performFullAuthFlow();
     await _authStorage.saveTokenToCache(token);
     return token;
   }

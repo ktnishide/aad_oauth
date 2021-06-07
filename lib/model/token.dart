@@ -98,13 +98,12 @@ class Token {
 
   /// Check if Access Token is set and not expired.
   bool hasValidAccessToken() {
-    log('=======');
-    log(toString());
-    log('=======');
+    log('== aad_oauth =====');
+    log('token is valid: ${(accessToken != null && expireTimeStamp!.isAfter(DateTime.now().toUtc())).toString()}');
     log('accessToken idToken: ${idToken?.toString()}');
     log('accessToken expire: ${expireTimeStamp?.toString()}');
     log('accessToken expireIn: ${expiresIn?.toString()}');
-    log('=======');
+    log('== aad_oauth =====');
     return accessToken != null &&
         expireTimeStamp!.isAfter(DateTime.now().toUtc());
   }
