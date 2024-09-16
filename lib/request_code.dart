@@ -4,10 +4,10 @@ import 'model/config.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class RequestCode {
-  final StreamController<String> _onCodeListener = StreamController();
+  final StreamController<String?> _onCodeListener = StreamController();
   final FlutterWebviewPlugin _webView = FlutterWebviewPlugin();
   final Config _config;
-  AuthorizationRequest _authorizationRequest;
+  late AuthorizationRequest _authorizationRequest;
 
   var _onCodeStream;
 
@@ -15,8 +15,8 @@ class RequestCode {
     _authorizationRequest = AuthorizationRequest(config);
   }
 
-  Future<String> requestCode() async {
-    String code;
+  Future<String?> requestCode() async {
+    String? code;
     final urlParams = _constructUrlParams();
 
     await _webView.launch(
@@ -46,7 +46,7 @@ class RequestCode {
   }
 
   void sizeChanged() {
-    _webView.resize(_config.screenSize);
+    _webView.resize(_config.screenSize!);
   }
 
   Future<void> clearCookies() async {
@@ -54,16 +54,16 @@ class RequestCode {
     await _webView.close();
   }
 
-  Stream<String> get _onCode =>
+  Stream<String?> get _onCode =>
       _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
 
   String _constructUrlParams() =>
       _mapToQueryParams(_authorizationRequest.parameters);
 
-  String _mapToQueryParams(Map<String, String> params) {
+  String _mapToQueryParams(Map<String, String?> params) {
     final queryParams = <String>[];
     params
-        .forEach((String key, String value) => queryParams.add('$key=$value'));
+        .forEach((String key, String? value) => queryParams.add('$key=$value'));
     return queryParams.join('&');
   }
 }
